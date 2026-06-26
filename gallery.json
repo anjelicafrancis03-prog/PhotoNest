@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Misty Headland",
+    "series": "Northern Coast",
+    "location": "Isle of Skye, Scotland",
+    "year": "2024",
+    "dimensions": "6000 × 4000 px",
+    "src": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=max&w=2400&q=88",
+    "download": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=max&w=5000&q=95",
+    "alt": "Foggy coastline in soft morning light"
+  },
+  {
+    "title": "Wild Iris",
+    "series": "Still Forms",
+    "location": "Hokkaido, Japan",
+    "year": "2025",
+    "dimensions": "4480 × 6720 px",
+    "src": "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=max&w=2400&q=88",
+    "download": "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=max&w=5000&q=95",
+    "alt": "Green foliage seen from above"
+  },
+  {
+    "title": "Salt & Stone",
+    "series": "High Desert",
+    "location": "Atacama, Chile",
+    "year": "2023",
+    "dimensions": "6240 × 4160 px",
+    "src": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=max&w=2400&q=88",
+    "download": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=max&w=5000&q=95",
+    "alt": "Snow covered mountain ridge"
+  },
+  {
+    "title": "Red Quiet",
+    "series": "Daybreak",
+    "location": "Kyoto, Japan",
+    "year": "2025",
+    "dimensions": "6000 × 4000 px",
+    "src": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=max&w=2400&q=88",
+    "download": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=max&w=5000&q=95",
+    "alt": "Traditional Japanese street at dusk"
+  },
+  {
+    "title": "Tide Lines",
+    "series": "Northern Coast",
+    "location": "Vík, Iceland",
+    "year": "2024",
+    "dimensions": "7952 × 5304 px",
+    "src": "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=max&w=2400&q=88",
+    "download": "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=max&w=5000&q=95",
+    "alt": "Ocean waves across black sand"
+  },
+  {
+    "title": "Arc of Light",
+    "series": "Night Studies",
+    "location": "Patagonia, Argentina",
+    "year": "2024",
+    "dimensions": "6048 × 4024 px",
+    "src": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=max&w=2400&q=88",
+    "download": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=max&w=5000&q=95",
+    "alt": "Road through a vast mountain landscape"
+  }
+]
