@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css?v=20260626-5" />
+    <link rel="stylesheet" href="./styles.css?v=20260626-6" />
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
@@ -30,7 +30,12 @@
       <header class="reader-header">
         <button class="text-button close-reader" id="close-reader" type="button">← 返回书架</button>
         <p class="reader-title" id="reader-title"></p>
-        <button class="text-button" id="download-button" type="button">下载原图 <span>↓</span></button>
+        <div class="reader-actions">
+          <button class="text-button fullscreen-button" id="fullscreen-button" type="button" aria-label="全屏查看照片" title="全屏查看照片">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5" /></svg>
+          </button>
+          <button class="text-button" id="download-button" type="button">下载原图 <span>↓</span></button>
+        </div>
       </header>
 
       <div class="reader-stage">
@@ -56,6 +61,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
-    <script src="./app.js?v=20260626-5"></script>
+    <script src="./app.js?v=20260626-7"></script>
   </body>
 </html>

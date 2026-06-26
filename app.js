@@ -2,6 +2,7 @@ const shelf = document.querySelector('#album-shelf');
 const reader = document.querySelector('#reader');
 const readerTitle = document.querySelector('#reader-title');
 const imageFrame = document.querySelector('#image-frame');
+const fullscreenButton = document.querySelector('#fullscreen-button');
 const readerImages = [document.querySelector('#reader-image-a'), document.querySelector('#reader-image-b')];
 const photoCaption = document.querySelector('#photo-caption');
 const photoDetails = document.querySelector('#photo-details');
@@ -153,11 +154,41 @@ function openAlbum(album) {
 }
 
 function closeAlbum() {
+  if (getFullscreenElement() === imageFrame) exitFullscreen();
   anime.remove(reader);
   anime({
     targets: reader, opacity: [1, 0], duration: 280, easing: 'easeInQuad',
     complete: () => { reader.classList.remove('is-open'); reader.setAttribute('aria-hidden', 'true'); reader.style.opacity = ''; },
   });
+}
+
+function getFullscreenElement() {
+  return document.fullscreenElement || document.webkitFullscreenElement;
+}
+
+function exitFullscreen() {
+  return (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+}
+
+async function toggleFullscreen() {
+  try {
+    if (getFullscreenElement()) {
+      await exitFullscreen();
+    } else if (imageFrame.requestFullscreen || imageFrame.webkitRequestFullscreen) {
+      await (imageFrame.requestFullscreen || imageFrame.webkitRequestFullscreen).call(imageFrame);
+    } else {
+      showToast('当前浏览器不支持全屏显示。');
+    }
+  } catch {
+    showToast('无法进入全屏显示。');
+  }
+}
+
+function updateFullscreenButton() {
+  const isFullscreen = getFullscreenElement() === imageFrame;
+  fullscreenButton.classList.toggle('is-active', isFullscreen);
+  fullscreenButton.setAttribute('aria-label', isFullscreen ? '退出全屏显示' : '全屏查看照片');
+  fullscreenButton.title = isFullscreen ? '退出全屏显示' : '全屏查看照片';
 }
 
 function changePage(step) {
@@ -193,14 +224,20 @@ document.querySelector('#close-reader').addEventListener('click', closeAlbum);
 document.querySelector('#previous-page').addEventListener('click', () => changePage(-1));
 document.querySelector('#next-page').addEventListener('click', () => changePage(1));
 document.querySelector('#download-button').addEventListener('click', downloadCurrentPhoto);
+fullscreenButton.addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange', updateFullscreenButton);
+document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
 document.addEventListener('keydown', (event) => {
   if (!activeAlbum || !reader.classList.contains('is-open')) return;
   if (event.key === 'ArrowRight') changePage(1);
   if (event.key === 'ArrowLeft') changePage(-1);
-  if (event.key === 'Escape') closeAlbum();
+  if (event.key === 'Escape') {
+    if (getFullscreenElement()) exitFullscreen();
+    else closeAlbum();
+  }
 });
 
-fetch('./gallery.json?v=20260626-5')
+fetch('./gallery.json?v=20260626-6')
   .then((response) => { if (!response.ok) throw new Error('Could not load albums'); return response.json(); })
   .then((data) => { albums = data; renderShelf(); })
   .catch(() => showToast('相册暂时无法加载。请检查 gallery.json。'));
