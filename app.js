@@ -1,97 +1,129 @@
-const gallery = document.querySelector('#gallery');
-const photoCount = document.querySelector('#photo-count');
-const lightbox = document.querySelector('#lightbox');
-const lightboxImage = document.querySelector('#lightbox-image');
-const lightboxTitle = document.querySelector('#lightbox-title');
-const lightboxSeries = document.querySelector('#lightbox-series');
-const lightboxDetails = document.querySelector('#lightbox-details');
-const downloadButton = document.querySelector('#download-button');
+const shelf = document.querySelector('#album-shelf');
+const reader = document.querySelector('#reader');
+const readerTitle = document.querySelector('#reader-title');
+const readerImage = document.querySelector('#reader-image');
+const photoCaption = document.querySelector('#photo-caption');
+const photoDetails = document.querySelector('#photo-details');
+const albumDescription = document.querySelector('#album-description');
+const currentPage = document.querySelector('#current-page');
+const totalPages = document.querySelector('#total-pages');
 const toast = document.querySelector('#toast');
-let activePhoto = null;
+let albums = [];
+let activeAlbum = null;
+let pageIndex = 0;
 let toastTimer;
-
-document.querySelector('#year').textContent = new Date().getFullYear();
 
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add('visible');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('visible'), 3600);
+  toastTimer = setTimeout(() => toast.classList.remove('visible'), 3200);
 }
 
-function makeCard(photo) {
+function pad(number) {
+  return String(number).padStart(2, '0');
+}
+
+function albumCard(album, index) {
   const card = document.createElement('button');
-  card.className = 'gallery-card';
+  card.className = 'album-card';
   card.type = 'button';
+  card.style.setProperty('--cover-tint', album.tint);
+  card.setAttribute('aria-label', `打开相册：${album.title}`);
   card.innerHTML = `
-    <img src="${photo.thumbnail || photo.src}" alt="${photo.alt || photo.title}" loading="lazy" decoding="async" />
-    <span class="gallery-label"><strong>${photo.title}</strong><small>${photo.year || ''}</small></span>`;
-  card.addEventListener('click', () => openLightbox(photo));
+    <div class="album-cover">
+      <img src="${album.cover}" alt="${album.coverAlt}" loading="eager" decoding="async" />
+      <div class="cover-content">
+        <span class="album-index">Edition ${pad(index + 1)}</span>
+        <strong class="cover-title">${album.title}</strong>
+        <span class="cover-bottom"><span class="album-count">${pad(album.photos.length)} photographs</span><span class="open-mark">↗</span></span>
+      </div>
+    </div>`;
+  card.addEventListener('click', () => openAlbum(album));
   return card;
 }
 
-function renderPhotos(photos, mode = 'replace') {
-  if (mode === 'replace') gallery.replaceChildren();
-  photos.forEach((photo) => gallery.append(makeCard(photo)));
-  photoCount.textContent = String(gallery.children.length).padStart(2, '0');
+function renderShelf() {
+  shelf.replaceChildren(...albums.map(albumCard));
+  anime({
+    targets: '.album-card', opacity: [0, 1], translateY: [36, 0], rotate: [-1.5, 0],
+    duration: 850, delay: anime.stagger(110, { start: 180 }), easing: 'easeOutExpo',
+  });
 }
 
-function openLightbox(photo) {
-  activePhoto = photo;
-  lightboxImage.src = photo.src;
-  lightboxImage.alt = photo.alt || photo.title;
-  lightboxTitle.textContent = photo.title;
-  lightboxSeries.textContent = photo.series || 'Photograph';
-  lightboxDetails.textContent = [photo.location, photo.year, photo.dimensions].filter(Boolean).join('  ·  ');
-  lightbox.showModal();
+function renderPage(direction = 1) {
+  const photo = activeAlbum.photos[pageIndex];
+  const pageNodes = [document.querySelector('#photo-page'), document.querySelector('.reader-footer')];
+  anime.remove(pageNodes);
+  readerImage.src = photo.src;
+  readerImage.alt = photo.alt;
+  photoCaption.textContent = photo.title;
+  photoDetails.textContent = [photo.location, photo.year, photo.dimensions].filter(Boolean).join(' · ');
+  readerTitle.textContent = activeAlbum.title;
+  albumDescription.textContent = activeAlbum.description;
+  currentPage.textContent = pad(pageIndex + 1);
+  totalPages.textContent = pad(activeAlbum.photos.length);
+  anime({ targets: pageNodes, opacity: [0, 1], translateX: [direction * 24, 0], duration: 520, easing: 'easeOutCubic' });
 }
 
-document.querySelector('#close-lightbox').addEventListener('click', () => lightbox.close());
-lightbox.addEventListener('click', (event) => { if (event.target === lightbox) lightbox.close(); });
+function openAlbum(album) {
+  activeAlbum = album;
+  pageIndex = 0;
+  reader.classList.add('is-open');
+  reader.setAttribute('aria-hidden', 'false');
+  renderPage();
+  anime({ targets: reader, opacity: [0, 1], duration: 420, easing: 'easeOutQuad' });
+}
 
-async function downloadPhoto(photo) {
-  const source = photo.download || photo.src;
-  const name = photo.filename || `${photo.title.toLowerCase().replace(/[^a-z0-9]+/gi, '-')}.jpg`;
-  downloadButton.disabled = true;
-  downloadButton.textContent = '正在准备…';
+function closeAlbum() {
+  anime.remove(reader);
+  anime({
+    targets: reader, opacity: [1, 0], duration: 280, easing: 'easeInQuad',
+    complete: () => { reader.classList.remove('is-open'); reader.setAttribute('aria-hidden', 'true'); reader.style.opacity = ''; },
+  });
+}
+
+function changePage(step) {
+  if (!activeAlbum) return;
+  const nextIndex = pageIndex + step;
+  if (nextIndex < 0 || nextIndex >= activeAlbum.photos.length) return;
+  pageIndex = nextIndex;
+  renderPage(step);
+}
+
+async function downloadCurrentPhoto() {
+  if (!activeAlbum) return;
+  const photo = activeAlbum.photos[pageIndex];
+  const button = document.querySelector('#download-button');
+  button.disabled = true;
+  button.textContent = '正在准备…';
   try {
-    const response = await fetch(source, { mode: 'cors' });
-    if (!response.ok) throw new Error('download unavailable');
-    const blob = await response.blob();
-    const link = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: name });
+    const response = await fetch(photo.download || photo.src, { mode: 'cors' });
+    if (!response.ok) throw new Error('Download unavailable');
+    const link = Object.assign(document.createElement('a'), { href: URL.createObjectURL(await response.blob()), download: photo.filename || `${photo.title}.jpg` });
     document.body.append(link); link.click(); link.remove(); URL.revokeObjectURL(link.href);
     showToast(`正在下载「${photo.title}」原图`);
   } catch {
-    window.open(source, '_blank', 'noopener');
+    window.open(photo.download || photo.src, '_blank', 'noopener');
     showToast('已在新标签页打开原图，可使用浏览器保存。');
   } finally {
-    downloadButton.disabled = false;
-    downloadButton.innerHTML = '下载原图 <span aria-hidden="true">↓</span>';
+    button.disabled = false;
+    button.innerHTML = '下载原图 <span>↓</span>';
   }
 }
 
-downloadButton.addEventListener('click', () => activePhoto && downloadPhoto(activePhoto));
+document.querySelector('#close-reader').addEventListener('click', closeAlbum);
+document.querySelector('#previous-page').addEventListener('click', () => changePage(-1));
+document.querySelector('#next-page').addEventListener('click', () => changePage(1));
+document.querySelector('#download-button').addEventListener('click', downloadCurrentPhoto);
+document.addEventListener('keydown', (event) => {
+  if (!activeAlbum || !reader.classList.contains('is-open')) return;
+  if (event.key === 'ArrowRight') changePage(1);
+  if (event.key === 'ArrowLeft') changePage(-1);
+  if (event.key === 'Escape') closeAlbum();
+});
 
-const fileInput = document.querySelector('#file-input');
-const dropZone = document.querySelector('#drop-zone');
-function importFiles(files) {
-  const imageFiles = [...files].filter((file) => file.type.startsWith('image/'));
-  if (!imageFiles.length) return showToast('请选择 JPG、PNG、WebP、AVIF 等图片文件。');
-  const localPhotos = imageFiles.map((file) => ({
-    title: file.name.replace(/\.[^.]+$/, ''), src: URL.createObjectURL(file), download: URL.createObjectURL(file), filename: file.name,
-    series: 'Local preview', year: new Date().getFullYear(), dimensions: `${(file.size / 1024 / 1024).toFixed(1)} MB`, alt: file.name,
-  }));
-  renderPhotos(localPhotos, 'append');
-  document.querySelector('#collection').scrollIntoView({ behavior: 'smooth' });
-  showToast(`已加入 ${imageFiles.length} 张本地照片${imageFiles.some((file) => file.size > 10 * 1024 * 1024) ? '（含超过 10 MB 的原图）' : ''}。`);
-}
-document.querySelector('#file-picker').addEventListener('click', () => fileInput.click());
-document.querySelector('#upload-trigger').addEventListener('click', () => document.querySelector('#upload').scrollIntoView({ behavior: 'smooth' }));
-fileInput.addEventListener('change', (event) => importFiles(event.target.files));
-['dragenter', 'dragover'].forEach((name) => dropZone.addEventListener(name, (event) => { event.preventDefault(); dropZone.classList.add('is-dragging'); }));
-['dragleave', 'drop'].forEach((name) => dropZone.addEventListener(name, (event) => { event.preventDefault(); dropZone.classList.remove('is-dragging'); }));
-dropZone.addEventListener('drop', (event) => importFiles(event.dataTransfer.files));
 fetch('gallery.json')
-  .then((response) => { if (!response.ok) throw new Error('Could not load gallery'); return response.json(); })
-  .then((photos) => renderPhotos(photos))
-  .catch(() => showToast('作品集暂时无法加载。请检查 gallery.json。'));
+  .then((response) => { if (!response.ok) throw new Error('Could not load albums'); return response.json(); })
+  .then((data) => { albums = data; renderShelf(); })
+  .catch(() => showToast('相册暂时无法加载。请检查 gallery.json。'));

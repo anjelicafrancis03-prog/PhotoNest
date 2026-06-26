@@ -3,88 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="PhotoNest — a home for high-resolution photography." />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2317241e'/%3E%3Cpath d='M16 46V18h13c10 0 16 5 16 14s-6 14-16 14h-4V34h4c4 0 7-1 7-5s-3-5-7-5h-4v22z' fill='%23f3f0e8'/%3E%3C/svg%3E" />
-    <title>PhotoNest — 摄影作品集</title>
+    <meta name="description" content="PhotoNest — a high-resolution photography bookshelf." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23141110'/%3E%3Cpath d='M16 46V18h13c10 0 16 5 16 14s-6 14-16 14h-4V34h4c4 0 7-1 7-5s-3-5-7-5h-4v22z' fill='%23f2eee6'/%3E%3C/svg%3E" />
+    <title>PhotoNest — Photography Editions</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="grain" aria-hidden="true"></div>
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="PhotoNest 首页">Photo<span>Nest</span></a>
-      <nav aria-label="主导航">
-        <a href="#collection">作品集</a>
-        <a href="#about">关于</a>
-      </nav>
-      <button class="upload-trigger" id="upload-trigger" type="button">
-        <span aria-hidden="true">+</span> 预览照片
-      </button>
-    </header>
+    <div class="noise" aria-hidden="true"></div>
+    <main class="library" aria-labelledby="site-title">
+      <header class="library-header">
+        <p class="folio">No. 01 — 2026</p>
+        <h1 id="site-title">PhotoNest</h1>
+        <p class="folio right">Photography Editions</p>
+      </header>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <p class="eyebrow">A home for photographs / 2026</p>
-        <h1 id="hero-title">留住那些<br /><em>值得回看的</em> 光。</h1>
-        <div class="hero-bottom">
-          <p>PhotoNest 为高像素摄影而生。让一张照片，以它本来的尺寸被看见。</p>
-          <a class="circle-link" href="#collection" aria-label="浏览作品集">↓</a>
-        </div>
+      <section class="shelf-intro" aria-label="画廊说明">
+        <p class="eyebrow">The reading room</p>
+        <p>选择一本相册，<br />让照片慢慢展开。</p>
       </section>
 
-      <section class="collection" id="collection" aria-labelledby="collection-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Selected work</p>
-            <h2 id="collection-title">作品集 <span id="photo-count"></span></h2>
-          </div>
-          <div class="legend"><span></span> 点击作品，查看细节与原图</div>
-        </div>
-        <div class="gallery" id="gallery" aria-live="polite"></div>
-      </section>
+      <section class="album-shelf" id="album-shelf" aria-label="摄影相册"></section>
 
-      <section class="upload-section" id="upload" aria-labelledby="upload-title">
-        <div>
-          <p class="eyebrow">Your photographs</p>
-          <h2 id="upload-title">大尺寸照片，<br /><em>无需妥协。</em></h2>
-        </div>
-        <div class="drop-zone" id="drop-zone" aria-label="可拖入照片进行本地预览">
-          <input id="file-input" type="file" accept="image/*" multiple hidden />
-          <p class="drop-icon" aria-hidden="true">↗</p>
-          <p>拖入高像素照片<br />或 <button id="file-picker" type="button">选择文件</button></p>
-          <small>支持超过 10 MB 的 JPG、PNG、WebP、AVIF 等图片。仅在当前浏览器中预览，不会上传。</small>
-        </div>
-      </section>
-
-      <section class="about" id="about">
-        <p class="eyebrow">About PhotoNest</p>
-        <p class="about-copy">一个为摄影作品留出呼吸空间的地方。简洁的界面，把注意力还给每一帧光影。</p>
-        <p class="about-note">将原图放进 <code>assets/gallery/</code>，再更新 <code>gallery.json</code>，即可发布你自己的作品集。</p>
-      </section>
+      <footer class="library-footer">
+        <p>High-resolution photographs, held in editions.</p>
+        <p><span class="key">←</span><span class="key">→</span> 翻阅作品</p>
+      </footer>
     </main>
 
-    <footer>
-      <a class="brand" href="#top">Photo<span>Nest</span></a>
-      <p>High-resolution photographs, carefully housed.</p>
-      <p>© <span id="year"></span></p>
-    </footer>
+    <section class="reader" id="reader" aria-label="摄影画册阅读器" aria-hidden="true">
+      <header class="reader-header">
+        <button class="text-button close-reader" id="close-reader" type="button">← 返回书架</button>
+        <p class="reader-title" id="reader-title"></p>
+        <button class="text-button" id="download-button" type="button">下载原图 <span>↓</span></button>
+      </header>
 
-    <dialog class="lightbox" id="lightbox" aria-labelledby="lightbox-title">
-      <button class="close" id="close-lightbox" type="button" aria-label="关闭预览">×</button>
-      <div class="lightbox-image-wrap"><img id="lightbox-image" alt="" /></div>
-      <div class="lightbox-meta">
-        <div>
-          <p class="eyebrow" id="lightbox-series"></p>
-          <h2 id="lightbox-title"></h2>
-          <p id="lightbox-details"></p>
-        </div>
-        <button class="download-button" id="download-button" type="button">下载原图 <span aria-hidden="true">↓</span></button>
+      <div class="reader-stage">
+        <button class="page-hit prev" id="previous-page" type="button" aria-label="上一页"></button>
+        <figure class="photo-page" id="photo-page">
+          <div class="image-frame"><img id="reader-image" alt="" /></div>
+          <figcaption>
+            <span id="photo-caption"></span>
+            <span id="photo-details"></span>
+          </figcaption>
+        </figure>
+        <button class="page-hit next" id="next-page" type="button" aria-label="下一页"></button>
       </div>
-    </dialog>
+
+      <footer class="reader-footer">
+        <p id="album-description"></p>
+        <p class="pagination"><span id="current-page">01</span> / <span id="total-pages">01</span></p>
+      </footer>
+    </section>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

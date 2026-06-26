@@ -1,29 +1,36 @@
 # PhotoNest
 
-一个为高像素摄影作品设计的静态画廊，可直接部署至 GitHub Pages。
+一个为高像素摄影作品设计的静态“摄影书架”，可直接部署至 GitHub Pages。
 
 ## 功能
 
-- 编辑杂志风响应式画廊与全屏原图预览
-- 图片懒加载、异步解码；浏览器端支持拖入或选择大于 10 MB 的照片预览
+- 单视窗相册书架：选择相册后，以摄影书方式逐页阅读，支持左右方向键翻页
+- 无长页面、无网页内置上传功能；图片按相册整理并由 `gallery.json` 驱动
+- Anime.js 负责相册出场、进入阅读器和翻页过渡动画
 - 每张作品可下载原图；若第三方图片源禁止跨域下载，会在新标签页打开原图
 - GitHub Actions 自动部署至 GitHub Pages
 
 ## 发布自己的作品
 
 1. 在仓库中新建 `assets/gallery/`，把原图放入其中。例如 `assets/gallery/morning-lake.jpg`。
-2. 修改 `gallery.json`，每张作品写入 `title`、`src`、`download`、`alt` 等字段。仓库内图片可这样填写：
+2. 修改 `gallery.json`。根数组中的每一项是一册相册；`cover` 为封面，`photos` 是相册内页。仓库内图片可这样填写：
 
    ```json
    {
-     "title": "Morning Lake",
-     "series": "Water Studies",
-     "location": "Hangzhou, China",
-     "year": "2026",
-     "dimensions": "9504 × 6336 px",
-     "src": "assets/gallery/morning-lake.jpg",
-     "download": "assets/gallery/morning-lake.jpg",
-     "alt": "Sunlight across a quiet lake"
+     "title": "Water Studies",
+     "tint": "#536147",
+     "cover": "assets/gallery/morning-lake.jpg",
+     "coverAlt": "Sunlight across a quiet lake",
+     "description": "晨光在湖面留下的短暂形状。",
+     "photos": [{
+       "title": "Morning Lake",
+       "location": "Hangzhou, China",
+       "year": "2026",
+       "dimensions": "9504 × 6336 px",
+       "src": "assets/gallery/morning-lake.jpg",
+       "download": "assets/gallery/morning-lake.jpg",
+       "alt": "Sunlight across a quiet lake"
+     }]
    }
    ```
 
