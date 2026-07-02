@@ -51,8 +51,8 @@
   {
     "title": "成都",
     "tint": "#4d5b63",
-    "cover": "assets/gallery/chengdu/cover-chengdu-06.jpg",
-    "coverAlt": "成都博物馆金色展品",
+    "cover": "assets/gallery/chengdu/cover-chengdu-02.jpg",
+    "coverAlt": "成都城市街区与商场立面",
     "description": "成都旅途中的城市夜景、街区灯光与博物馆展陈。",
     "photos": [
       { "title": "成都 01", "location": "成都", "dimensions": "7680 × 4320 px", "src": "assets/gallery/chengdu/DJI_20260619202914_0428_D.JPG", "thumb": "assets/gallery/chengdu/thumbs/DJI_20260619202914_0428_D-thumb.jpg", "download": "assets/gallery/chengdu/DJI_20260619202914_0428_D.JPG", "alt": "成都旅途摄影作品 01" },
