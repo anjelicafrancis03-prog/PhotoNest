@@ -27,7 +27,7 @@
     "title": "西安",
     "tint": "#6b513a",
     "cover": "assets/gallery/xian/cover.jpg",
-    "coverAlt": "西安夜景舞台与灯光",
+    "coverAlt": "西安室内遗址与光束",
     "description": "西安旅途中的城市、天际线与夏日光影。",
     "photos": [
       { "title": "西安 01", "location": "西安", "dimensions": "7680 × 4320 px", "src": "assets/gallery/xian/DJI_20260610175538_0052_D.JPG", "thumb": "assets/gallery/xian/thumbs/DJI_20260610175538_0052_D-thumb.jpg", "download": "assets/gallery/xian/DJI_20260610175538_0052_D.JPG", "alt": "西安旅途摄影作品 01" },
@@ -52,7 +52,7 @@
     "title": "成都",
     "tint": "#4d5b63",
     "cover": "assets/gallery/chengdu/cover.jpg",
-    "coverAlt": "成都城市夜景与恐龙屏幕",
+    "coverAlt": "成都博物馆金色展品",
     "description": "成都旅途中的城市夜景、街区灯光与博物馆展陈。",
     "photos": [
       { "title": "成都 01", "location": "成都", "dimensions": "7680 × 4320 px", "src": "assets/gallery/chengdu/DJI_20260619202914_0428_D.JPG", "thumb": "assets/gallery/chengdu/thumbs/DJI_20260619202914_0428_D-thumb.jpg", "download": "assets/gallery/chengdu/DJI_20260619202914_0428_D.JPG", "alt": "成都旅途摄影作品 01" },
