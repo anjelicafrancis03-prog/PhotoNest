@@ -28,6 +28,16 @@ let toastTimer;
 let activeImageIndex = 0;
 let pageRequestId = 0;
 let pageIsLoading = false;
+const rawAssetBase = 'https://raw.githubusercontent.com/zstar1003/PhotoNest/main/';
+
+function isLocalPreview() {
+  return ['localhost', '127.0.0.1', ''].includes(window.location.hostname) || window.location.protocol === 'file:';
+}
+
+function resolveOriginalAsset(path) {
+  if (!path || /^(https?:)?\/\//.test(path) || path.startsWith('data:') || isLocalPreview()) return path;
+  return rawAssetBase + path.split('/').map(encodeURIComponent).join('/');
+}
 
 function showToast(message) {
   toast.textContent = message;
@@ -124,7 +134,7 @@ function updatePageMetadata(photo) {
 function preloadAdjacentPages() {
   [pageIndex - 1, pageIndex + 1]
     .filter((index) => activeAlbum.photos[index])
-    .forEach((index) => { const image = new Image(); image.src = activeAlbum.photos[index].src; });
+    .forEach((index) => { const image = new Image(); image.src = resolveOriginalAsset(activeAlbum.photos[index].src); });
 }
 
 function setPageControls(isLoading = false) {
@@ -199,7 +209,7 @@ function renderPage(direction = 1, immediate = false) {
     setPageControls();
     showToast('这张照片暂时无法加载。');
   };
-  incoming.src = photo.src;
+  incoming.src = resolveOriginalAsset(photo.src);
   if (incoming.complete && incoming.naturalWidth) revealImage();
 }
 
@@ -267,17 +277,18 @@ function changePage(step) {
 async function downloadCurrentPhoto() {
   if (!activeAlbum) return;
   const photo = activeAlbum.photos[pageIndex];
+  const downloadUrl = resolveOriginalAsset(photo.download || photo.src);
   const button = document.querySelector('#download-button');
   button.disabled = true;
   button.textContent = '正在准备…';
   try {
-    const response = await fetch(photo.download || photo.src, { mode: 'cors' });
+    const response = await fetch(downloadUrl, { mode: 'cors' });
     if (!response.ok) throw new Error('Download unavailable');
     const link = Object.assign(document.createElement('a'), { href: URL.createObjectURL(await response.blob()), download: photo.filename || `${photo.title}.jpg` });
     document.body.append(link); link.click(); link.remove(); URL.revokeObjectURL(link.href);
     showToast(`正在下载「${photo.title}」原图`);
   } catch {
-    window.open(photo.download || photo.src, '_blank', 'noopener');
+    window.open(downloadUrl, '_blank', 'noopener');
     showToast('已在新标签页打开原图，可使用浏览器保存。');
   } finally {
     button.disabled = false;

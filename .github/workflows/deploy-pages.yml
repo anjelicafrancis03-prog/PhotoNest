@@ -25,10 +25,27 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='_site/' \
+            --exclude='assets/gallery/' \
+            ./ _site/
+          find assets/gallery -type d -name thumbs | while read -r dir; do
+            mkdir -p "_site/$dir"
+            rsync -a "$dir/" "_site/$dir/"
+          done
+          find assets/gallery -type f \( -name 'cover*.jpg' -o -name 'cover*.jpeg' -o -name 'cover*.png' \) | while read -r file; do
+            mkdir -p "_site/$(dirname "$file")"
+            cp "$file" "_site/$file"
+          done
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
