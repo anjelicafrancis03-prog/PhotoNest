@@ -5,6 +5,7 @@ const contactCount = document.querySelector('#contact-count');
 const contactDescription = document.querySelector('#contact-description');
 const photoGrid = document.querySelector('#photo-grid');
 const reader = document.querySelector('#reader');
+const closeReaderButton = document.querySelector('#close-reader');
 const readerTitle = document.querySelector('#reader-title');
 const imageFrame = document.querySelector('#image-frame');
 const fullscreenButton = document.querySelector('#fullscreen-button');
@@ -206,6 +207,8 @@ function openPhoto(index) {
   if (!activeAlbum || !activeAlbum.photos[index]) return;
   pageIndex = index;
   resetImageLayers();
+  closeReaderButton.textContent = '← 返回相册';
+  closeReaderButton.setAttribute('aria-label', '返回相册');
   photoCaption.textContent = '';
   photoDetails.textContent = '';
   reader.classList.add('is-open');
@@ -305,7 +308,7 @@ document.addEventListener('keydown', (event) => {
   if (contactSheet.classList.contains('is-open') && event.key === 'Escape') closeContactSheet();
 });
 
-fetch('./gallery.json?v=20260626-8')
+fetch('./gallery.json?v=20260702-1')
   .then((response) => { if (!response.ok) throw new Error('Could not load albums'); return response.json(); })
   .then((data) => { albums = data; renderShelf(); })
   .catch(() => showToast('相册暂时无法加载。请检查 gallery.json。'));
