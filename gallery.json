@@ -1,0 +1,15 @@
+[
+  {
+    "title": "万图库",
+    "tint": "#d44040",
+    "cover": "assets/gallery/wantuku/cover-test.jpg",
+    "coverAlt": "都市时尚摄影封面",
+    "description": "万图库精选 — 都市时尚与城市天际线系列。测试 PhotoNest 相册展示效果。",
+    "photos": [
+      { "title": "都市红装", "location": "城市阳台 · 天际线", "dimensions": "1920 × 2560 px", "src": "assets/gallery/wantuku/city-red.png", "thumb": "assets/gallery/wantuku/thumbs/city-red-thumb.jpg", "download": "assets/gallery/wantuku/city-red.png", "alt": "都市女性阳台上的红色服装与城市天际线" },
+      { "title": "红色高跟鞋", "location": "城市天际线", "dimensions": "1920 × 2560 px", "src": "assets/gallery/wantuku/city-heels.png", "thumb": "assets/gallery/wantuku/thumbs/city-heels-thumb.jpg", "download": "assets/gallery/wantuku/city-heels.png", "alt": "城市天际线背景下的女性红色紧身高跟鞋造型" },
+      { "title": "摩天楼影", "location": "城市天际线", "dimensions": "1920 × 2560 px", "src": "assets/gallery/wantuku/city-skyline.png", "thumb": "assets/gallery/wantuku/thumbs/city-skyline-thumb.jpg", "download": "assets/gallery/wantuku/city-skyline.png", "alt": "城市天际线背景自信时尚女性" },
+      { "title": "东方明珠", "location": "上海 · 东方明珠塔", "dimensions": "1920 × 2560 px", "src": "assets/gallery/wantuku/city-eiffel.png", "thumb": "assets/gallery/wantuku/thumbs/city-eiffel-thumb.jpg", "download": "assets/gallery/wantuku/city-eiffel.png", "alt": "上海天际线背景，女性红色时尚造型" }
+    ]
+  }
+]
