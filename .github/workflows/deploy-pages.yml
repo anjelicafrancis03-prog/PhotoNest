@@ -27,11 +27,8 @@ jobs:
             --exclude='_site/' \
             --exclude='assets/gallery/' \
             ./ _site/
-          find assets/gallery -type d -name thumbs | while read -r dir; do
-            mkdir -p "_site/$dir"
-            rsync -a "$dir/" "_site/$dir/"
-          done
-          find assets/gallery -type f \( -name 'cover*.jpg' -o -name 'cover*.jpeg' -o -name 'cover*.png' \) | while read -r file; do
+          # Copy all gallery images (covers, photos, thumbs)
+          find assets/gallery -type f | while read -r file; do
             mkdir -p "_site/$(dirname "$file")"
             cp "$file" "_site/$file"
           done
